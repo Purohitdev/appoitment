@@ -2,7 +2,7 @@ import { SignIn } from "@clerk/clerk-react"
 
 const Login = () => {
   return (
-    <div className="bg-[#f3f3f3]">
+    <div className="">
       <p className=""> this is login page </p>
       <SignIn/>
     </div>
