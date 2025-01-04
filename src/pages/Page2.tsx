@@ -1,5 +1,6 @@
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { useState } from "react";
+import { toast, Toaster } from "react-hot-toast";
 
 type Break = {
   breakStart: string;
@@ -90,8 +91,33 @@ function Page2() {
     );
   };
 
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/availability', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user?.id,
+          availability,
+        }),
+      });
+
+      if (response.ok) {
+        toast.success("Availability submitted successfully!");
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.error || "Failed to submit availability");
+      }
+    } catch (error) {
+      toast.error("Failed to submit availability");
+    }
+  };
+
   return (
     <div className="min-h-[100vh] w-[100%] flex justify-center items-center bg-[#333434] p-32">
+      <Toaster position="bottom-right" />
       <div className="w-[60vw] min-h-[80vh] bg-white rounded-3xl border p-5">
         <div className="flex items-center gap-2 mb-4">
           <UserButton />
@@ -201,7 +227,7 @@ function Page2() {
 
         <button
           className="mt-6 bg-black text-white py-2 px-4 rounded"
-          onClick={() => console.log(availability)}
+          onClick={handleSubmit}
         >
           Submit
         </button>
