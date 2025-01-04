@@ -1,13 +1,15 @@
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { useState } from "react";
-import {toast,Toaster} from "react-hot-toast";
+import { toast, Toaster } from "react-hot-toast";
+import { NavLink, useNavigate } from "react-router-dom";
 
-const Home = () => {
+const Page1 = () => {
   const { user } = useUser();
   const [shopName, setShopName] = useState("");
   const [shopType, setShopType] = useState("Barber");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [fullAddress, setFullAddress] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleShopNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShopName(e.target.value);
@@ -28,12 +30,43 @@ const Home = () => {
     setFullAddress(e.target.value);
   };
 
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
     if (!shopName || !shopType || !phoneNumber || !fullAddress) {
       toast.error("All fields are required!");
       return;
     }
-    toast.success("Form submitted successfully!");
+
+    try {
+      const response = await fetch('https://09rhn7dm-5000.inc1.devtunnels.ms/api/onboard', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          shopName,
+          shopType,
+          phoneNumber,
+          fullAddress,
+        }),
+      });
+
+      if (response.ok) {
+        toast.success("Form submitted successfully!");
+      
+        setTimeout(() => {
+          navigate("/page2");
+        }, 2000);
+
+
+
+      } else {
+        const errorData = await response.json();
+        toast.error(errorData.error || "Failed to submit form");
+      }
+    } catch (error) {
+      toast.error("Failed to submit form");
+    }
   };
 
   return (
@@ -109,4 +142,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Page1;
