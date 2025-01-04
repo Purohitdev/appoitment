@@ -1,21 +1,20 @@
-
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./auth/Login";
+import Register from "./auth/Register";
+import Auth from "./auth/Auth";
+import Home from "./pages/Home";
 
 const App = () => {
   return (
-
-    <div className="bg-[#f3f3f3] h-screen w-screen text-white flex justify-center items-center">
-
-      <div className="flex gap-2 ">
-      <button className="bg-black px-4 py-2 rounded-sm">Login </button>
-      <button className="bg-black px-4 py-2 rounded-sm" >Sigin </button>
-      </div>
-    
-      
-
-    </div>
-
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 };
 
 export default App;
-
