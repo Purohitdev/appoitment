@@ -1,17 +1,14 @@
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 
-const Page1 = () => {
+const Home = () => {
   const { user } = useUser();
-  const [shopName, setShopName] = useState("");
-  const [shopType, setShopType] = useState("Barber");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [fullAddress, setFullAddress] = useState("");
-  const [upiId, setUpiId] = useState("");
-  const [upiPic, setUpiPic] = useState<File | null>(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [shopName, setShopName] = useState<string>("");
+  const [shopType, setShopType] = useState<string>("Barber");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [fullAddress, setFullAddress] = useState<string>("");
+  const [image, setImage] = useState<string | null>(null);
 
   const handleShopNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShopName(e.target.value);
@@ -32,42 +29,41 @@ const Page1 = () => {
     setFullAddress(e.target.value);
   };
 
-  const handleUpiIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUpiId(e.target.value);
-  };
-
-  const handleUpiPicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setUpiPic(e.target.files[0]);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+      };
+      reader.readAsDataURL(e.target.files[0]);
     }
   };
 
   const handleSubmit = async () => {
-    if (!shopName || !shopType || !phoneNumber || !fullAddress || !upiId || !upiPic) {
+    if (!shopName || !shopType || !phoneNumber || !fullAddress || !image) {
       toast.error("All fields are required!");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("shopName", shopName);
-    formData.append("shopType", shopType);
-    formData.append("phoneNumber", phoneNumber);
-    formData.append("fullAddress", fullAddress);
-    formData.append("upiId", upiId);
-    formData.append("upiPic", upiPic);
+    const data = {
+      shopName,
+      shopType,
+      phoneNumber,
+      fullAddress,
+      image: image.split(',')[1], // Remove the data URL prefix
+    };
 
     try {
       const response = await fetch('https://09rhn7dm-5000.inc1.devtunnels.ms/api/onboard', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
         toast.success("Form submitted successfully!");
-      
-        setTimeout(() => {
-          navigate("/page2");
-        }, 2000);
       } else {
         const errorData = await response.json();
         toast.error(errorData.error || "Failed to submit form");
@@ -139,24 +135,11 @@ const Page1 = () => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label className="text-black mb-1">UPI ID:</label>
-            <input
-              type="email"
-              value={upiId}
-              onChange={handleUpiIdChange}
-              placeholder="Enter UPI ID"
-              className="p-2 border rounded"
-              required
-            />
-          </div>
-
-          <div className="flex flex-col w-full">
-            <label className="text-black mb-1">UPI Picture:</label>
+            <label className="text-black mb-1">Image:</label>
             <input
               type="file"
-              onChange={handleUpiPicChange}
+              onChange={handleImageChange}
               className="p-2 border rounded"
-              accept="image/*"
               required
             />
           </div>
@@ -173,7 +156,4 @@ const Page1 = () => {
   );
 };
 
-export default Page1;
-
-
-
+export default Home;
