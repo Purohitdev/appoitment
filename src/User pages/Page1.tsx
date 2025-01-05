@@ -11,6 +11,7 @@ const Home = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [fullAddress, setFullAddress] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
+  const [upiId, setUpiId] = useState<string>("");
 
   const handleShopNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setShopName(e.target.value);
@@ -41,8 +42,12 @@ const Home = () => {
     }
   };
 
+  const handleUpiIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUpiId(e.target.value);
+  };
+
   const handleSubmit = async () => {
-    if (!shopName || !shopType || !phoneNumber || !fullAddress || !image) {
+    if (!shopName || !shopType || !phoneNumber || !fullAddress || !image || !upiId) {
       toast.error("All fields are required!");
       return;
     }
@@ -52,7 +57,8 @@ const Home = () => {
       shopType,
       phoneNumber,
       fullAddress,
-      image: image.split(',')[1], // Remove the data URL prefix
+      image: image.split(',')[1],
+      upiId,
     };
 
     try {
@@ -70,6 +76,7 @@ const Home = () => {
         setTimeout(() => {
           navigate("/page2");
         }, 2000);
+        
       } else {
         const errorData = await response.json();
         toast.error(errorData.error || "Failed to submit form");
@@ -135,6 +142,17 @@ const Home = () => {
               value={fullAddress}
               onChange={handleFullAddressChange}
               placeholder="Enter full address"
+              className="p-2 border rounded"
+              required
+            />
+          </div>
+          <div className="flex flex-col w-full">
+            <label className="text-black mb-1">UPI ID:</label>
+            <input
+              type="text"
+              value={upiId}
+              onChange={handleUpiIdChange}
+              placeholder="Enter UPI ID"
               className="p-2 border rounded"
               required
             />

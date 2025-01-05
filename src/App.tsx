@@ -6,11 +6,13 @@ import {
 } from "react-router-dom";
 import Login from "./auth/Login";
 import Auth from "./auth/Auth";
-import Page1 from "./pages/Page1";
+import Page1 from "./User pages/Page1";
 import Register from "./auth/Register";
-import Page2 from './pages/Page2'
+import Page2 from './User pages/Page2'
 import { SignedOut, SignedIn } from "@clerk/clerk-react";
-import Dashbored from "./pages/Dashbored";
+import Dashbored from "./User pages/Dashbored";
+import Main from "./Customer Pages/Main"
+import Shop from "./Customer Pages/Shop"
 
 const App = () => {
   return (
@@ -28,6 +30,12 @@ const App = () => {
                   <Route path="/" element={<Page1 />} />
                   <Route path="/Page2" element={<Page2 />} />
                   <Route path="/Dashbored" element={<Dashbored />} />
+
+                  {/* customer */}
+                  <Route path="customer/main" element={<Main />} />
+                  <Route path="/shop/:shopName" element={<Shop />} />
+
+
 
 
                   <Route path="*" element={<Navigate to="/" />} />
