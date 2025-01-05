@@ -6,10 +6,10 @@ import { FaUsers } from "react-icons/fa";
 import { MdWorkHistory } from "react-icons/md";
 import { IoMdPersonAdd } from "react-icons/io";
 import { UserButton } from "@clerk/clerk-react";
-
-
-
-
+import Dash from "./Dash";
+import Clints from "./Clints";
+import Request from "./Request";
+import History from "./History";
 
 const Dashbored = () => {
   const [selected, setSelected] = useState(0);
@@ -17,13 +17,13 @@ const Dashbored = () => {
   const renderBodyComponent = () => {
     switch (selected) {
       case 0:
-        return "Dashbored";
+        return <Dash/>;
       case 1:
-        return "clints";
+        return <Clints/>;
       case 2:
-        return "request";
+        return <Request/> ;
       case 3:
-        return "history";
+        return <History/>;
       default:
         return null;
     }

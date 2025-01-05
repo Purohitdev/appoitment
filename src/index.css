@@ -12,3 +12,13 @@ body { font-weight: 400; }
     @apply border-border; }
   body {
     @apply bg-background text-foreground; } }
+
+
+    .hide-scrollbar {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }

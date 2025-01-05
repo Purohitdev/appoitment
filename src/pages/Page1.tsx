@@ -1,9 +1,11 @@
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import {  useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { user } = useUser();
+  const navigate = useNavigate(); 
   const [shopName, setShopName] = useState<string>("");
   const [shopType, setShopType] = useState<string>("Barber");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -64,6 +66,10 @@ const Home = () => {
 
       if (response.ok) {
         toast.success("Form submitted successfully!");
+
+        setTimeout(() => {
+          navigate("/page2");
+        }, 2000);
       } else {
         const errorData = await response.json();
         toast.error(errorData.error || "Failed to submit form");
@@ -135,7 +141,7 @@ const Home = () => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label className="text-black mb-1">Image:</label>
+            <label className="text-black mb-1">Upi Image:</label>
             <input
               type="file"
               onChange={handleImageChange}
