@@ -1,6 +1,7 @@
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import {  useNavigate } from "react-router-dom";
 
 type Break = {
   breakStart: string;
@@ -19,6 +20,7 @@ const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sat
 
 function Page2() {
   const { user } = useUser();
+  const navigate = useNavigate(); // Initialize useNavigate
   const [availability, setAvailability] = useState<Availability[]>(
     daysOfWeek.map((day) => ({
       day,
@@ -93,7 +95,7 @@ function Page2() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/availability', {
+      const response = await fetch('https://09rhn7dm-5000.inc1.devtunnels.ms/api/availability', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,6 +108,12 @@ function Page2() {
 
       if (response.ok) {
         toast.success("Availability submitted successfully!");
+        setTimeout(() => {
+          navigate("/dashbored");
+        }, 2000);
+
+
+
       } else {
         const errorData = await response.json();
         toast.error(errorData.error || "Failed to submit availability");
@@ -114,20 +122,21 @@ function Page2() {
       toast.error("Failed to submit availability");
     }
   };
+  
 
   return (
     <div className="min-h-[100vh] w-[100%] flex justify-center items-center bg-[#333434] p-32">
       <Toaster position="bottom-right" />
-      <div className="w-[60vw] min-h-[80vh] bg-white rounded-3xl border p-5">
+      <div className="min-w-[60vw] min-h-[80vh] bg-white rounded-3xl border p-5">
         <div className="flex items-center gap-2 mb-4">
           <UserButton />
           <p className="text-black">{user?.username}</p>
         </div>
         <h1 className="text-2xl font-semibold mb-6">Enter your availability details</h1>
 
-        <div className="space-y-6">
+        <div className="space-y-6 ">
           {availability.map((item, index) => (
-            <div key={item.day} className="flex items-center gap-4 border p-4 rounded">
+            <div key={item.day} className="flex items-center gap-4  border p-4 rounded">
               <label className="flex items-center gap-2">
                 <input
                   type="checkbox"
@@ -141,7 +150,7 @@ function Page2() {
                 <div className="flex flex-col items-start gap-4">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                      <label>Start:</label>
+                      <label>Day Start:</label>
                       <input
                         type="time"
                         value={item.shiftStart}
@@ -153,7 +162,7 @@ function Page2() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <label>End:</label>
+                      <label>Day End:</label>
                       <input
                         type="time"
                         value={item.shiftEnd}

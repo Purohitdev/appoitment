@@ -10,6 +10,7 @@ import Page1 from "./pages/Page1";
 import Register from "./auth/Register";
 import Page2 from './pages/Page2'
 import { SignedOut, SignedIn } from "@clerk/clerk-react";
+import Dashbored from "./pages/Dashbored";
 
 const App = () => {
   return (
@@ -26,6 +27,8 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Page1 />} />
                   <Route path="/Page2" element={<Page2 />} />
+                  <Route path="/Dashbored" element={<Dashbored />} />
+
 
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>

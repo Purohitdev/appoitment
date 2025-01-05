@@ -1,7 +1,7 @@
 
 function Nav() {
   return (
-    <div className="h-[8vh] w-full border flex justify-between ">
+    <div className="h-[8vh] w-full border flex justify-between items-center px-4">
       <div className="logo">logo</div>
       <ul className="flex gap-2">
         <li>xyz</li>
