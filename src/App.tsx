@@ -13,6 +13,7 @@ import { SignedOut, SignedIn } from "@clerk/clerk-react";
 import Dashbored from "./User pages/Dashbored";
 import Main from "./Customer Pages/Main"
 import Shop from "./Customer Pages/Shop"
+import Book from "./Customer Pages/Book"
 
 const App = () => {
   return (
@@ -34,6 +35,8 @@ const App = () => {
                   {/* customer */}
                   <Route path="customer/main" element={<Main />} />
                   <Route path="/shop/:shopName" element={<Shop />} />
+                  <Route path="/shop/:shopName/book" element={<Book />} />
+
 
 
 

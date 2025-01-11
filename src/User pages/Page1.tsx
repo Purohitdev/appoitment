@@ -62,7 +62,7 @@ const Home = () => {
     };
 
     try {
-      const response = await fetch('https://09rhn7dm-5000.inc1.devtunnels.ms/api/onboard', {
+      const response = await fetch('https://server-ello.onrender.com/api/onboard ', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
